@@ -5,24 +5,35 @@ Sử dụng công nghệ: Streamlit, Plotly, Pandas, ReportLab
 """
 
 import os
-from datetime import datetime
+import sys
 from pathlib import Path
+
+# Thêm tự động cả thư mục hiện tại và thư mục cha vào sys.path
+CURRENT_DIR = Path(__file__).resolve().parent
+PARENT_DIR = CURRENT_DIR.parent
+
+for path in [CURRENT_DIR, PARENT_DIR]:
+    if str(path) not in sys.path:
+        sys.path.insert(0, str(path))
+
+from datetime import datetime
 import pandas as pd
 import plotly.graph_objects as go
 from plotly.subplots import make_subplots
 import streamlit as st
 
-from package1.config import SUPPORTED_TICKERS, MACRO_DEFAULTS, REPORTS_DIR, RATING_SCALE
-from package1.data.macro_loader import fetch_macro_indicators, fetch_vnindex_history
-from package1.data.industry_loader import get_industry_analysis
-from package1.data.stock_loader import fetch_stock_price_history, fetch_stock_fundamentals, clean_ticker
-from package1.analytics.macro_engine import analyze_macro_environment
-from package1.analytics.industry_engine import evaluate_industry_and_peers
-from package1.analytics.technical_engine import compute_technical_indicators
-from package1.analytics.fundamental_engine import analyze_fundamentals
-from package1.analytics.valuation_engine import perform_valuation
-from package1.analytics.scorecard_engine import calculate_quant_scorecard, build_scenario_matrix
-from package1.reporting.pdf_generator import create_investment_report_pdf
+# Import dạng tương đối / trực tiếp (KHÔNG dùng tiền tố package1.)
+from config import SUPPORTED_TICKERS, MACRO_DEFAULTS, REPORTS_DIR, RATING_SCALE
+from data.macro_loader import fetch_macro_indicators, fetch_vnindex_history
+from data.industry_loader import get_industry_analysis
+from data.stock_loader import fetch_stock_price_history, fetch_stock_fundamentals, clean_ticker
+from analytics.macro_engine import analyze_macro_environment
+from analytics.industry_engine import evaluate_industry_and_peers
+from analytics.technical_engine import compute_technical_indicators
+from analytics.fundamental_engine import analyze_fundamentals
+from analytics.valuation_engine import perform_valuation
+from analytics.scorecard_engine import calculate_quant_scorecard, build_scenario_matrix
+from reporting.pdf_generator import create_investment_report_pdf
 
 # Cấu hình trang Streamlit
 st.set_page_config(
